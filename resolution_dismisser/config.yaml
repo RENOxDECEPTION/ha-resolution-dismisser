@@ -1,7 +1,7 @@
 ---
 name: "Resolution Dismisser"
 description: "Automatically dismisses annoying Home Assistant Supervisor resolution warnings (unsupported OS, software, etc.) that can't be permanently disabled on Supervised installations."
-version: "1.2.0"
+version: "1.2.1"
 slug: "resolution_dismisser"
 url: "https://github.com/RENOxDECEPTION/ha-resolution-dismisser"
 startup: "services"

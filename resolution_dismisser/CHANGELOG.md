@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.2.1
+
+- Fix WebSocket auth: pass token as HTTP header for Supervisor proxy compatibility
+- Handle both proxy auto-auth and manual auth flows
+
 ## 1.2.0
 
 - Replace free-text arrays with toggle switches for all known issues, suggestions, and repairs
