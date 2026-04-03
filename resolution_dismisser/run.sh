@@ -16,7 +16,6 @@ trap 'RUNNING=false' SIGTERM SIGINT
 # Read add-on options
 # ------------------------------------------------------------------------------
 CONFIG_PATH="/data/options.json"
-ADDON_CONFIG="/addon/config.yaml"  # mounted by HA add-on framework
 SUPERVISOR_API="http://supervisor"
 
 CHECK_INTERVAL=$(jq -r '.check_interval' "$CONFIG_PATH")
@@ -257,7 +256,7 @@ log_system_status() {
 # ==============================================================================
 main() {
     local version
-    version=$(grep '^version:' "$ADDON_CONFIG" 2>/dev/null | sed 's/version: *"\?\([^"]*\)"\?/\1/' || echo "unknown")
+    version="${ADDON_VERSION:-unknown}"
 
     log_info "========================================="
     log_info " Resolution Dismisser v${version}"

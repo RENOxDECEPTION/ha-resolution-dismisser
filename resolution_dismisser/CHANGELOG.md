@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.4
+
+- Fix version display: bake version into image via BUILD_VERSION arg
+
 ## 1.3.3
 
 - Remove custom AppArmor profile (blocked S6 overlay init), use HA default
