@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0
+
+- Rewrite repair dismissal: REST API for listing (auth handled by Supervisor proxy), WebSocket for ignoring
+- Multiple auth strategies: HTTP header auto-auth, fallback to token-based WS auth
+- Full WebSocket fallback if REST listing unavailable
+- Better error messages for auth failures
+
 ## 1.2.1
 
 - Fix WebSocket auth: pass token as HTTP header for Supervisor proxy compatibility
