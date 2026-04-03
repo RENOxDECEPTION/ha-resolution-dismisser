@@ -1,0 +1,103 @@
+---
+name: "Resolution Dismisser"
+description: "Automatically dismisses annoying Home Assistant Supervisor resolution warnings (unsupported OS, software, etc.) that can't be permanently disabled on Supervised installations."
+version: "1.2.0"
+slug: "resolution_dismisser"
+url: "https://github.com/RENOxDECEPTION/ha-resolution-dismisser"
+startup: "services"
+boot: "auto"
+image: "ghcr.io/renoxdeception/ha-resolution-dismisser-{arch}"
+arch:
+  - amd64
+  - aarch64
+  - armv7
+  - i386
+hassio_api: true
+hassio_role: "manager"
+homeassistant_api: true
+init: false
+options:
+  check_interval: 300
+  log_level: "info"
+  issue_no_current_backup: false
+  issue_dns_server_failed: false
+  issue_free_space: false
+  issue_multiple_data_disks: false
+  issue_security: false
+  issue_trust: false
+  issue_update_failed: false
+  issue_fatal_error: false
+  issue_reboot_required: false
+  suggestion_create_full_backup: false
+  suggestion_clear_full_backup: false
+  suggestion_execute_repair: false
+  suggestion_execute_update: false
+  suggestion_execute_reload: false
+  suggestion_execute_remove: false
+  suggestion_execute_reset: false
+  suggestion_execute_stop: false
+  repair_unsupported_system_os: false
+  repair_unsupported_system_software: false
+  repair_unsupported_system_job_conditions: false
+  repair_unsupported_system_connectivity_check: false
+  repair_unsupported_system_content_trust: false
+  repair_unsupported_system_dns_server: false
+  repair_unsupported_system_docker_configuration: false
+  repair_unsupported_system_network_manager: false
+  repair_unsupported_system_os_agent: false
+  repair_unsupported_system_privileged: false
+  repair_unsupported_system_systemd: false
+  repair_unsupported_system_cgroup_version: false
+  repair_unhealthy_system_docker: false
+  repair_unhealthy_system_supervisor: false
+  repair_unhealthy_system_setup: false
+  repair_unhealthy_system_privileged: false
+  repair_unhealthy_system_untrusted: false
+  repair_deprecated_method: false
+  custom_dismiss_issues: []
+  custom_dismiss_suggestions: []
+  custom_dismiss_repairs: []
+schema:
+  check_interval: "int(30,86400)"
+  log_level: "list(debug|info|warning|error)"
+  issue_no_current_backup: bool
+  issue_dns_server_failed: bool
+  issue_free_space: bool
+  issue_multiple_data_disks: bool
+  issue_security: bool
+  issue_trust: bool
+  issue_update_failed: bool
+  issue_fatal_error: bool
+  issue_reboot_required: bool
+  suggestion_create_full_backup: bool
+  suggestion_clear_full_backup: bool
+  suggestion_execute_repair: bool
+  suggestion_execute_update: bool
+  suggestion_execute_reload: bool
+  suggestion_execute_remove: bool
+  suggestion_execute_reset: bool
+  suggestion_execute_stop: bool
+  repair_unsupported_system_os: bool
+  repair_unsupported_system_software: bool
+  repair_unsupported_system_job_conditions: bool
+  repair_unsupported_system_connectivity_check: bool
+  repair_unsupported_system_content_trust: bool
+  repair_unsupported_system_dns_server: bool
+  repair_unsupported_system_docker_configuration: bool
+  repair_unsupported_system_network_manager: bool
+  repair_unsupported_system_os_agent: bool
+  repair_unsupported_system_privileged: bool
+  repair_unsupported_system_systemd: bool
+  repair_unsupported_system_cgroup_version: bool
+  repair_unhealthy_system_docker: bool
+  repair_unhealthy_system_supervisor: bool
+  repair_unhealthy_system_setup: bool
+  repair_unhealthy_system_privileged: bool
+  repair_unhealthy_system_untrusted: bool
+  repair_deprecated_method: bool
+  custom_dismiss_issues:
+    - "str?"
+  custom_dismiss_suggestions:
+    - "str?"
+  custom_dismiss_repairs:
+    - "str?"

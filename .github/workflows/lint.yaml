@@ -1,0 +1,34 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: YAML lint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: resolution_dismisser/config.yaml resolution_dismisser/build.yaml resolution_dismisser/translations/ repository.yaml
+          config_data: |
+            extends: default
+            rules:
+              line-length:
+                max: 200
+              truthy:
+                check-keys: false
+
+      - name: ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: resolution_dismisser
+          additional_files: run.sh
+
+      - name: Python syntax check
+        run: python3 -m py_compile resolution_dismisser/dismiss_repairs.py

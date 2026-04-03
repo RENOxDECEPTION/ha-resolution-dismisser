@@ -1,0 +1,41 @@
+#include <tunables/global>
+
+profile resolution_dismisser flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+
+  # Allow network access (Supervisor API + HA WebSocket)
+  network inet stream,
+  network inet6 stream,
+  network inet dgram,
+  network inet6 dgram,
+
+  # Allow reading add-on data/config
+  /data/** r,
+  /data/options.json r,
+
+  # Allow executing the main scripts
+  /run.sh rix,
+  /dismiss_repairs.py rix,
+
+  # Python and system binaries
+  /usr/bin/python3* rix,
+  /usr/bin/bash rix,
+  /usr/bin/jq rix,
+  /usr/bin/curl rix,
+  /bin/bash rix,
+  /bin/sleep rix,
+
+  # Python libraries
+  /usr/lib/python3*/** r,
+  /usr/lib/python3*/**.pyc r,
+
+  # Allow /tmp for Python
+  /tmp/** rw,
+
+  # Allow reading system files
+  /etc/** r,
+  /proc/** r,
+  /sys/** r,
+
+  # Deny everything else by default
+}

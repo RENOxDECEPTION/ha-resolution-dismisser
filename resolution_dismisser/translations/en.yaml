@@ -1,0 +1,126 @@
+---
+configuration:
+  check_interval:
+    name: Check interval (seconds)
+    description: How often to check for new items to dismiss (30–86400)
+  log_level:
+    name: Log level
+    description: Set to debug to see all discovered items
+
+  issue_no_current_backup:
+    name: "Issue: No current backup"
+    description: Dismiss the "no current backup" resolution issue
+  issue_dns_server_failed:
+    name: "Issue: DNS server failed"
+    description: Dismiss DNS server failure issues
+  issue_free_space:
+    name: "Issue: Free space"
+    description: Dismiss low free space issues
+  issue_multiple_data_disks:
+    name: "Issue: Multiple data disks"
+    description: Dismiss multiple data disk issues
+  issue_security:
+    name: "Issue: Security"
+    description: Dismiss security-related issues
+  issue_trust:
+    name: "Issue: Trust"
+    description: Dismiss trust-related issues
+  issue_update_failed:
+    name: "Issue: Update failed"
+    description: Dismiss update failure issues
+  issue_fatal_error:
+    name: "Issue: Fatal error"
+    description: Dismiss fatal error issues
+  issue_reboot_required:
+    name: "Issue: Reboot required"
+    description: Dismiss reboot required issues
+
+  suggestion_create_full_backup:
+    name: "Suggestion: Create full backup"
+    description: Dismiss the "create full backup" suggestion
+  suggestion_clear_full_backup:
+    name: "Suggestion: Clear full backup"
+    description: Dismiss the "clear full backup" suggestion
+  suggestion_execute_repair:
+    name: "Suggestion: Execute repair"
+    description: Dismiss "execute repair" suggestions
+  suggestion_execute_update:
+    name: "Suggestion: Execute update"
+    description: Dismiss "execute update" suggestions
+  suggestion_execute_reload:
+    name: "Suggestion: Execute reload"
+    description: Dismiss "execute reload" suggestions
+  suggestion_execute_remove:
+    name: "Suggestion: Execute remove"
+    description: Dismiss "execute remove" suggestions
+  suggestion_execute_reset:
+    name: "Suggestion: Execute reset"
+    description: Dismiss "execute reset" suggestions
+  suggestion_execute_stop:
+    name: "Suggestion: Execute stop"
+    description: Dismiss "execute stop" suggestions
+
+  repair_unsupported_system_os:
+    name: "Repair: Unsupported OS"
+    description: Dismiss the "Unsupported system - Operating System" repair
+  repair_unsupported_system_software:
+    name: "Repair: Unsupported software"
+    description: Dismiss the "Unsupported system - Software" repair
+  repair_unsupported_system_job_conditions:
+    name: "Repair: Unsupported job conditions"
+    description: Dismiss the "Unsupported system - Job conditions" repair
+  repair_unsupported_system_connectivity_check:
+    name: "Repair: Unsupported connectivity check"
+    description: Dismiss the "Unsupported system - Connectivity check" repair
+  repair_unsupported_system_content_trust:
+    name: "Repair: Unsupported content trust"
+    description: Dismiss the "Unsupported system - Content trust" repair
+  repair_unsupported_system_dns_server:
+    name: "Repair: Unsupported DNS server"
+    description: Dismiss the "Unsupported system - DNS server" repair
+  repair_unsupported_system_docker_configuration:
+    name: "Repair: Unsupported Docker config"
+    description: Dismiss the "Unsupported system - Docker configuration" repair
+  repair_unsupported_system_network_manager:
+    name: "Repair: Unsupported Network Manager"
+    description: Dismiss the "Unsupported system - Network Manager" repair
+  repair_unsupported_system_os_agent:
+    name: "Repair: Unsupported OS Agent"
+    description: Dismiss the "Unsupported system - OS Agent" repair
+  repair_unsupported_system_privileged:
+    name: "Repair: Unsupported privileged"
+    description: Dismiss the "Unsupported system - Privileged" repair
+  repair_unsupported_system_systemd:
+    name: "Repair: Unsupported systemd"
+    description: Dismiss the "Unsupported system - systemd" repair
+  repair_unsupported_system_cgroup_version:
+    name: "Repair: Unsupported cgroup version"
+    description: Dismiss the "Unsupported system - CGroup version" repair
+  repair_unhealthy_system_docker:
+    name: "Repair: Unhealthy Docker"
+    description: Dismiss the "Unhealthy system - Docker" repair
+  repair_unhealthy_system_supervisor:
+    name: "Repair: Unhealthy Supervisor"
+    description: Dismiss the "Unhealthy system - Supervisor" repair
+  repair_unhealthy_system_setup:
+    name: "Repair: Unhealthy setup"
+    description: Dismiss the "Unhealthy system - Setup" repair
+  repair_unhealthy_system_privileged:
+    name: "Repair: Unhealthy privileged"
+    description: Dismiss the "Unhealthy system - Privileged" repair
+  repair_unhealthy_system_untrusted:
+    name: "Repair: Unhealthy untrusted"
+    description: Dismiss the "Unhealthy system - Untrusted" repair
+  repair_deprecated_method:
+    name: "Repair: Deprecated method"
+    description: Dismiss the "Deprecated integration method" repair
+
+  custom_dismiss_issues:
+    name: Custom issues
+    description: Additional issue types to dismiss (for items not listed above)
+  custom_dismiss_suggestions:
+    name: Custom suggestions
+    description: Additional suggestion types to dismiss (for items not listed above)
+  custom_dismiss_repairs:
+    name: Custom repairs
+    description: Additional repair issue_ids to dismiss (for items not listed above)

@@ -1,0 +1,73 @@
+name: Build and Push
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "resolution_dismisser/**"
+
+env:
+  ADDON_DIR: resolution_dismisser
+  IMAGE_BASE: ghcr.io/renoxdeception/ha-resolution-dismisser
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      matrix:
+        include:
+          - arch: amd64
+            base: ghcr.io/home-assistant/amd64-base:3.21
+            platform: linux/amd64
+          - arch: aarch64
+            base: ghcr.io/home-assistant/aarch64-base:3.21
+            platform: linux/arm64
+          - arch: armv7
+            base: ghcr.io/home-assistant/armv7-base:3.21
+            platform: linux/arm/v7
+          - arch: i386
+            base: ghcr.io/home-assistant/i386-base:3.21
+            platform: linux/386
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read version from config.yaml
+        id: version
+        run: |
+          version=$(grep '^version:' ${{ env.ADDON_DIR }}/config.yaml | sed 's/version: *"\?\([^"]*\)"\?/\1/')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ env.ADDON_DIR }}
+          file: ${{ env.ADDON_DIR }}/Dockerfile
+          platforms: ${{ matrix.platform }}
+          push: true
+          build-args: |
+            BUILD_FROM=${{ matrix.base }}
+            BUILD_VERSION=${{ steps.version.outputs.version }}
+            BUILD_ARCH=${{ matrix.arch }}
+          tags: |
+            ${{ env.IMAGE_BASE }}-${{ matrix.arch }}:${{ steps.version.outputs.version }}
+            ${{ env.IMAGE_BASE }}-${{ matrix.arch }}:latest
+          labels: |
+            io.hass.version=${{ steps.version.outputs.version }}
+            io.hass.arch=${{ matrix.arch }}
+            io.hass.type=addon
