@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.2
+
+- Fix AppArmor profile: allow S6 overlay init system and all required binaries
+
 ## 1.3.1
 
 - Remove GHCR image field (packages were private, preventing container start)
