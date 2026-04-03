@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.3.1
+
+- Remove GHCR image field (packages were private, preventing container start)
+- Fall back to local builds until GHCR visibility is resolved
+
 ## 1.3.0
 
 - Rewrite repair dismissal: REST API for listing (auth handled by Supervisor proxy), WebSocket for ignoring
