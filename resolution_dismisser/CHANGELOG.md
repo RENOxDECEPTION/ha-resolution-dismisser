@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3.3
+
+- Remove custom AppArmor profile (blocked S6 overlay init), use HA default
+
 ## 1.3.2
 
 - Fix AppArmor profile: allow S6 overlay init system and all required binaries
