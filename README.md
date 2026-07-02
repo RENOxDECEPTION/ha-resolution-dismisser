@@ -1,6 +1,14 @@
 # Resolution Dismisser
 
-Vibe-coded add-on that auto-dismisses HA warnings you can't permanently disable. If it gets attention I'll polish it up, but it does the job.
+[![Add repository to my Home Assistant](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2FRENOxDECEPTION%2Fha-resolution-dismisser)
+
+![Supports amd64 Architecture][amd64-shield]
+![Supports aarch64 Architecture][aarch64-shield]
+![Supports armv7 Architecture][armv7-shield]
+![Supports i386 Architecture][i386-shield]
+[![License: MIT][license-shield]](resolution_dismisser/LICENSE)
+
+Home Assistant add-on that auto-dismisses HA warnings you can't permanently disable: "unsupported system" repairs, resolution center issues, and suggestions on Supervised installs.
 
 ## The Problem
 
@@ -35,3 +43,9 @@ There are also free-text fields at the bottom for anything not in the predefined
 ## License
 
 MIT
+
+[amd64-shield]: https://img.shields.io/badge/amd64-yes-green.svg
+[aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
+[armv7-shield]: https://img.shields.io/badge/armv7-yes-green.svg
+[i386-shield]: https://img.shields.io/badge/i386-yes-green.svg
+[license-shield]: https://img.shields.io/badge/license-MIT-blue.svg
