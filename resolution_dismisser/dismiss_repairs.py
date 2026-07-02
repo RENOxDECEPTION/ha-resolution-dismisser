@@ -14,27 +14,39 @@ import time
 
 SUPERVISOR_TOKEN = os.environ.get("SUPERVISOR_TOKEN", "")
 
+# Transient "core still starting" condition: reported as info, not an error.
+NOT_READY_MSG = "Core websocket not ready, will retry next interval"
+
 
 # --------------------------------------------------------------------------
 # WebSocket helpers
 # --------------------------------------------------------------------------
 def ws_connect():
-    """Try connecting to HA Core websocket via Supervisor proxy."""
+    """Connect to HA Core websocket via the Supervisor proxy, retrying while core starts."""
     try:
         import websocket
     except ImportError:
         return None, "websocket-client not installed"
 
-    urls = [
-        "ws://supervisor/core/websocket",
-        "ws://homeassistant:8123/api/websocket",
-    ]
-    headers = ["Authorization: Bearer " + SUPERVISOR_TOKEN] if SUPERVISOR_TOKEN else []
+    if not SUPERVISOR_TOKEN:
+        return None, "SUPERVISOR_TOKEN not set"
 
-    for url in urls:
+    # Only the Supervisor proxy accepts SUPERVISOR_TOKEN. Core's native
+    # /api/websocket rejects it (auth_invalid) and trips HA's http.ban logger,
+    # so there is no valid fallback URL.
+    url = "ws://supervisor/core/websocket"
+    headers = ["Authorization: Bearer " + SUPERVISOR_TOKEN]
+
+    # ponytail: fixed backoff covers the core-startup window; the add-on's
+    # main loop retries every check_interval anyway
+    for delay in (0, 5, 10, 30):
+        if delay:
+            time.sleep(delay)
         try:
             ws = websocket.create_connection(url, timeout=10, header=headers)
-            # Handle auth handshake
+        except Exception:
+            continue
+        try:
             msg = json.loads(ws.recv())
             if msg.get("type") == "auth_ok":
                 return ws, None
@@ -44,12 +56,15 @@ def ws_connect():
                 if msg.get("type") == "auth_ok":
                     return ws, None
                 ws.close()
-                # Don't try next URL with same token, it'll fail too
                 return None, "Auth failed: " + msg.get("message", "unknown")
             ws.close()
         except Exception:
+            try:
+                ws.close()
+            except Exception:
+                pass
             continue
-    return None, "Could not connect to HA websocket"
+    return None, NOT_READY_MSG
 
 
 def recv_by_id(ws, msg_id, timeout=30):
@@ -74,12 +89,13 @@ def main():
         sys.exit(1)
 
     patterns = sys.argv[1:]
-    results = {"listed": 0, "all_repairs": [], "dismissed": [], "errors": []}
+    results = {"listed": 0, "all_repairs": [], "dismissed": [], "errors": [], "info": []}
 
     # --- Step 1: Connect to HA Core WebSocket ---
     ws, ws_err = ws_connect()
     if not ws:
-        results["errors"].append(ws_err or "Could not connect")
+        key = "info" if ws_err == NOT_READY_MSG else "errors"
+        results[key].append(ws_err or "Could not connect")
         print(json.dumps(results))
         return
 

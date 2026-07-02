@@ -8,9 +8,11 @@ set -e
 
 # ------------------------------------------------------------------------------
 # Graceful shutdown on SIGTERM/SIGINT
+# Also kills the python repair-dismisser child, which may be mid retry-sleep
 # ------------------------------------------------------------------------------
 RUNNING=true
-trap 'RUNNING=false' SIGTERM SIGINT
+PY_PID=""
+trap 'RUNNING=false; kill "$PY_PID" 2>/dev/null || true' SIGTERM SIGINT
 
 # ------------------------------------------------------------------------------
 # Read add-on options
@@ -185,11 +187,21 @@ dismiss_matching_repairs() {
         return
     fi
 
-    local result
-    result=$(python3 /dismiss_repairs.py "${DISMISS_REPAIRS[@]}" 2>&1) || {
-        log_warn "Failed to run repair dismissal script: $result"
+    # Run in background + wait so the SIGTERM trap fires immediately (a
+    # command substitution would block it), and keep stderr out of the JSON
+    # we parse: tracebacks go straight to the add-on log instead.
+    local result_file="/tmp/dismiss_repairs.json"
+    python3 /dismiss_repairs.py "${DISMISS_REPAIRS[@]}" > "$result_file" &
+    PY_PID=$!
+    wait "$PY_PID" || {
+        PY_PID=""
+        [[ "$RUNNING" == "true" ]] && log_warn "Repair dismissal script failed (see log above)" || true
         return
     }
+    PY_PID=""
+
+    local result
+    result=$(cat "$result_file")
 
     local listed
     listed=$(echo "$result" | jq -r '.listed // 0')
@@ -221,6 +233,15 @@ dismiss_matching_repairs() {
 
     # Log full raw result at debug
     log_debug "Raw dismiss_repairs.py output: $result"
+
+    # Log transient conditions (e.g. core still starting) at info, not warn
+    local notes
+    notes=$(echo "$result" | jq -r '.info[]? // empty')
+    if [[ -n "$notes" ]]; then
+        while IFS= read -r line; do
+            log_info "Repair dismissal: $line"
+        done <<< "$notes"
+    fi
 
     # Log errors
     local errors

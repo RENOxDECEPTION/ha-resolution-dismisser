@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.3.7
+
+- Fix "Auth failed" warning and HA http.ban log entry on every core restart:
+  remove the direct-to-core websocket fallback (`ws://homeassistant:8123`),
+  which can never authenticate with SUPERVISOR_TOKEN
+- Retry the Supervisor proxy websocket with backoff (5s/10s/30s) to cover
+  the core startup window
+- Log "core not ready" as info instead of warning
+- Respond to stop requests immediately, even while the repair script is
+  mid-retry (previously shutdown could stall up to ~45s)
+- Keep python stderr out of the parsed JSON result (tracebacks now go to
+  the add-on log instead of silently breaking result parsing)
+
+## 1.3.6
+
+- Use WebSocket-only for the repairs API (no REST endpoint exists)
+
+## 1.3.5
+
+- Re-enable GHCR pre-built images
+
 ## 1.3.4
 
 - Fix version display: bake version into image via BUILD_VERSION arg
